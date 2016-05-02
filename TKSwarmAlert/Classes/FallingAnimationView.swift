@@ -279,8 +279,12 @@ public class FallingAnimationView: UIView {
                 for v in disappearableViews {
                     self?.removeViewAndCheck(v)
                 }
-                self?.didDisappearAllViews()
-                self?.didDisappearAllViews = { _ in }
+                if let av = self?.animatedViews {
+                    if av.filter(condition).count <= 0 {
+                        self?.didDisappearAllViews()
+                        self?.didDisappearAllViews = { _ in }
+                    }
+                }
             }
         }
         self.animator.addBehavior(gravity)
