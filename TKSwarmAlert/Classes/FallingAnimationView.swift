@@ -47,8 +47,9 @@ class FallingAnimationView: UIView {
 
     
     let gravityMagniture:CGFloat = 3
-    let snapBackDistance:CGFloat = 100
     let fieldMargin:CGFloat = 300
+
+    var snapBackDistance:CGFloat = 100
 
     var animator: UIDynamicAnimator
     var animationView: UIView
@@ -115,9 +116,10 @@ class FallingAnimationView: UIView {
 //        }
 //    }
     
-    override init(frame:CGRect) {
+    init(frame:CGRect, snapBackDistance: CGFloat = 100) {
         self.animationView = UIView()
         self.animator = UIDynamicAnimator(referenceView: animationView)
+        self.snapBackDistance = snapBackDistance
         super.init(frame:frame)
         animationView.frame = CGRect(x: 0, y: 0, width: self.frame.size.width + fieldMargin*2, height: self.frame.size.height + fieldMargin*2)
         animationView.center = self.center

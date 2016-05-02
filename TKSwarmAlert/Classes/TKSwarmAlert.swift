@@ -32,12 +32,12 @@ public class TKSwarmAlert {
         self.staticViews.append(view)
     }
     
-    public func show(views:[UIView]) {
+    public func show(views:[UIView], snapBackDistance: CGFloat = 100) {
         let window:UIWindow? = UIApplication.sharedApplication().keyWindow
         if window != nil {
             let frame:CGRect = window!.bounds
             blurView = TKSWBackgroundView(frame: frame, type: type)
-            animationView = FallingAnimationView(frame: frame)
+            animationView = FallingAnimationView(frame: frame, snapBackDistance: snapBackDistance)
             
             if durationOfPreventingTapBackgroundArea > 0 {
                 animationView?.enableToTapSuperView = false
