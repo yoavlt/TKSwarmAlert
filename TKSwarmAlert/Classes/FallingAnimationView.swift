@@ -47,7 +47,7 @@ class FallingAnimationView: UIView {
 
     
     let gravityMagniture:CGFloat = 3
-    let snapBackDistance:CGFloat = 30
+    let snapBackDistance:CGFloat = 100
     let fieldMargin:CGFloat = 300
 
     var animator: UIDynamicAnimator
