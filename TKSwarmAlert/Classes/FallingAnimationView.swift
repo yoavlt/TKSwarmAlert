@@ -58,6 +58,7 @@ public class FallingAnimationView: UIView {
     var startPoints: [CGPoint] = []
     var currentAnimationViewTags: [Int] = []
     var nextViewsList: [[UIView]] = []
+    public var delayRemoveOfView: Double = 0.0
     
     public var enableToTapSuperView: Bool = true
 
@@ -281,13 +282,19 @@ public class FallingAnimationView: UIView {
                     for v in views {
                         if v.superview != nil {
                             if v.frame.top >= (v.superview!.bounds.bottom - self!.fieldMargin) {
-                                v.removeFromSuperview()
+                                self!.after(self!.delayRemoveOfView, then: { 
+                                    v.removeFromSuperview()
+                                })
                             }
                             else if v.frame.right <= (v.superview!.bounds.left + self!.fieldMargin) {
-                                v.removeFromSuperview()
+                                self!.after(self!.delayRemoveOfView, then: {
+                                    v.removeFromSuperview()
+                                })
                             }
                             else if v.frame.left >= (v.superview!.bounds.right - self!.fieldMargin) {
-                                v.removeFromSuperview()
+                                self!.after(self!.delayRemoveOfView, then: {
+                                    v.removeFromSuperview()
+                                })
                             }
                         }
                     }
@@ -352,5 +359,11 @@ public class FallingAnimationView: UIView {
         let xDist = (to.x - from.x)
         let yDist = (to.y - from.y)
         return sqrt((xDist * xDist) + (yDist * yDist))
+    }
+    
+    func after(seconds: Double, then: () -> ()) {
+        let delay = seconds * Double(NSEC_PER_SEC)
+        let time  = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue(), then)
     }
 }
