@@ -42,9 +42,9 @@ import UIKit
 
 public class FallingAnimationView: UIView {
     
-    var willDissmissAllViews: ()->Void = {}
-    var didDissmissAllViews: ()->Void = {}
-
+    var willDissmissAllViews: () -> () = {}
+    var didDismissAllViews:  () -> () = {}
+    var didDisappearAllViews: () -> () = {}
     
     let gravityMagniture:CGFloat = 3
     let fieldMargin:CGFloat = 300
@@ -273,38 +273,47 @@ public class FallingAnimationView: UIView {
         let gravity = UIGravityBehavior(items: views)
         gravity.magnitude = gravityMagniture
         gravity.action = { [weak self] in
-            if self != nil {
-                if self!.animatedViews.count == 0 {
-                    self!.animator.removeAllBehaviors()
-                    self!.didDissmissAllViews()
+            self?.removeBehaviorIfNeeded()
+            if let condition = self?.inSuperView {
+                let disappearableViews = views.filter { condition($0) == false }
+                for v in disappearableViews {
+                    self?.removeViewAndCheck(v)
                 }
-                else {
-                    for v in views {
-                        if v.superview != nil {
-                            if v.frame.top >= (v.superview!.bounds.bottom - self!.fieldMargin) {
-                                self!.after(self!.delayRemoveOfView, then: { 
-                                    v.removeFromSuperview()
-                                })
-                            }
-                            else if v.frame.right <= (v.superview!.bounds.left + self!.fieldMargin) {
-                                self!.after(self!.delayRemoveOfView, then: {
-                                    v.removeFromSuperview()
-                                })
-                            }
-                            else if v.frame.left >= (v.superview!.bounds.right - self!.fieldMargin) {
-                                self!.after(self!.delayRemoveOfView, then: {
-                                    v.removeFromSuperview()
-                                })
-                            }
-                        }
-                    }
+                if views.filter(condition).count <= 0 {
+                    self?.didDisappearAllViews()
                 }
             }
         }
         self.animator.addBehavior(gravity)
     }
-    
 
+    func inSuperView(v: UIView) -> Bool {
+        if v.superview == nil {
+            return false
+        }
+        if v.frame.top >= (v.superview!.bounds.bottom - fieldMargin) {
+            return false
+        }
+        else if v.frame.right <= (v.superview!.bounds.left + fieldMargin) {
+            return false
+        }
+        else if v.frame.left >= (v.superview!.bounds.right - fieldMargin) {
+            return false
+        }
+        return true
+    }
+
+    func removeViewAndCheck(view: UIView?) {
+        after(delayRemoveOfView, then: { view?.removeFromSuperview() })
+        removeBehaviorIfNeeded()
+    }
+    
+    func removeBehaviorIfNeeded() {
+        if animatedViews.count == 0 {
+            animator.removeAllBehaviors()
+            didDismissAllViews()
+        }
+    }
     
     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     // MARK: Util
@@ -322,6 +331,13 @@ public class FallingAnimationView: UIView {
     func enableTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FallingAnimationView.onTapSuperView))
         self.addGestureRecognizer(tapGesture)
+    }
+    
+    func forceDismiss() {
+        for v in animatedViews {
+            v.removeFromSuperview()
+        }
+        didDismissAllViews()
     }
     
     func disableTapGesture() {

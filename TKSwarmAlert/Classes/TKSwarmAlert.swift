@@ -73,10 +73,12 @@ public class TKSwarmAlert {
                     self.blurView?.alpha = 0
                 }
             }
-            animationView?.didDissmissAllViews = {
+            animationView?.didDismissAllViews = {
                 self.blurView?.removeFromSuperview()
-                self.animationView?.removeFromSuperview()
                 self.didDissmissAllViews()
+            }
+            animationView?.didDisappearAllViews = {
+                self.blurView?.removeFromSuperview()
                 for staticView in self.staticViews {
                     staticView.alpha = 1
                 }
