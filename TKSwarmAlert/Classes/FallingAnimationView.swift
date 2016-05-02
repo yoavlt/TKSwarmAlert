@@ -279,9 +279,8 @@ public class FallingAnimationView: UIView {
                 for v in disappearableViews {
                     self?.removeViewAndCheck(v)
                 }
-                if views.filter(condition).count <= 0 {
-                    self?.didDisappearAllViews()
-                }
+                self?.didDisappearAllViews()
+                self?.didDisappearAllViews = { _ in }
             }
         }
         self.animator.addBehavior(gravity)
@@ -304,7 +303,15 @@ public class FallingAnimationView: UIView {
     }
 
     func removeViewAndCheck(view: UIView?) {
-        after(delayRemoveOfView, then: { view?.removeFromSuperview() })
+        after(delayRemoveOfView, then: { [weak self] _ in
+            view?.removeFromSuperview()
+            if let condition = self?.inSuperView, let views = self?.animatedViews {
+                if views.filter(condition).count <= 0 {
+                    self?.didDismissAllViews()
+                    self?.didDismissAllViews = { _ in }
+                }
+            }
+        })
         removeBehaviorIfNeeded()
     }
     
@@ -314,7 +321,7 @@ public class FallingAnimationView: UIView {
             didDismissAllViews()
         }
     }
-    
+
     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     // MARK: Util
     func disableDragGesture() {
@@ -338,6 +345,7 @@ public class FallingAnimationView: UIView {
             v.removeFromSuperview()
         }
         didDismissAllViews()
+        didDismissAllViews = { _ in }
     }
     
     func disableTapGesture() {
