@@ -50,6 +50,7 @@ public class FallingAnimationView: UIView {
     let fieldMargin:CGFloat = 300
 
     var snapBackDistance:CGFloat = 100
+    var snapBackVelocity:CGFloat = 1000000
 
     var animator: UIDynamicAnimator
     var animationView: UIView
@@ -116,10 +117,11 @@ public class FallingAnimationView: UIView {
 //        }
 //    }
     
-    init(frame:CGRect, snapBackDistance: CGFloat = 100) {
+    init(frame:CGRect, snapBackDistance: CGFloat = 100, snapBackVelocity: CGFloat = 1000000) {
         self.animationView = UIView()
         self.animator = UIDynamicAnimator(referenceView: animationView)
         self.snapBackDistance = snapBackDistance
+        self.snapBackVelocity = snapBackVelocity
         super.init(frame:frame)
         animationView.frame = CGRect(x: 0, y: 0, width: self.frame.size.width + fieldMargin*2, height: self.frame.size.height + fieldMargin*2)
         animationView.center = self.center
@@ -200,7 +202,9 @@ public class FallingAnimationView: UIView {
             // judge if fall
             let touchPoint: CGPoint = gesture.locationInView(gestureView.superview)
             let movedDistance = distance(from: startPoints[gestureView.tag], to: touchPoint)
-            if movedDistance < snapBackDistance {// not fall
+            let velocity = gesture.velocityInView(self.animationView.superview)
+            let speed = velocity.x * velocity.x + velocity.y * velocity.y
+            if movedDistance < snapBackDistance && speed < 1000000 {// not fall
                 let snap = UISnapBehavior(item: gestureView, snapToPoint: startPoints[gestureView.tag])
                 self.animator.addBehavior(snap)
             }
