@@ -74,7 +74,7 @@ public class TKSwarmAlert {
                 }
             }
             animationView?.didDismissAllViews = {
-                self.blurView?.removeFromSuperview()
+                self.animationView?.removeFromSuperview()
                 self.didDissmissAllViews()
             }
             animationView?.didDisappearAllViews = {
