@@ -344,7 +344,7 @@ public class FallingAnimationView: UIView {
         self.addGestureRecognizer(tapGesture)
     }
     
-    func forceDismiss() {
+    public func forceDismiss() {
         for v in animatedViews {
             v.removeFromSuperview()
         }
