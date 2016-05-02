@@ -17,13 +17,13 @@ public enum TKSWBackgroundType {
 
 
 
-class TKSWBackgroundView: UIView {
+public class TKSWBackgroundView: UIView {
     
     
-    let transparentBlackView = UIView()
-    var brightView: BrightView?
+    public let transparentBlackView = UIView()
+    public var brightView: BrightView?
 
-    var blurView: UIVisualEffectView?
+    public var blurView: UIVisualEffectView?
 
     
     var blackAlphaForBlur:CGFloat = 0.125
@@ -51,7 +51,7 @@ class TKSWBackgroundView: UIView {
             break
         }
     }
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

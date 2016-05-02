@@ -40,7 +40,7 @@ import UIKit
 
 */
 
-class FallingAnimationView: UIView {
+public class FallingAnimationView: UIView {
     
     var willDissmissAllViews: ()->Void = {}
     var didDissmissAllViews: ()->Void = {}
@@ -58,7 +58,7 @@ class FallingAnimationView: UIView {
     var currentAnimationViewTags: [Int] = []
     var nextViewsList: [[UIView]] = []
     
-    var enableToTapSuperView: Bool = true
+    public var enableToTapSuperView: Bool = true
 
     var allViews: [UIView] {
         get {
@@ -128,7 +128,7 @@ class FallingAnimationView: UIView {
         enableTapGesture()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -149,7 +149,7 @@ class FallingAnimationView: UIView {
         // make it draggable
         for v in views {
 //            dev_makeLine(v)
-            v.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "didDrag:"))
+            v.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(FallingAnimationView.didDrag(_:))))
             v.tag = startPoints.count
             startPoints.append(v.center)
             currentAnimationViewTags.append(v.tag)
@@ -309,7 +309,7 @@ class FallingAnimationView: UIView {
     }
     
     func enableTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: "onTapSuperView")
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FallingAnimationView.onTapSuperView))
         self.addGestureRecognizer(tapGesture)
     }
     

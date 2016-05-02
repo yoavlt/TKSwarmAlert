@@ -9,12 +9,12 @@
 import UIKit
 
 
-class BrightView: UIView {
+public class BrightView: UIView {
     
-    let color: UIColor
-    let shapeLayer:CAShapeLayer
-    let circleCenter: CGPoint?
-    let rotateDuration: CFTimeInterval
+    public let color: UIColor
+    public let shapeLayer:CAShapeLayer
+    public let circleCenter: CGPoint?
+    public let rotateDuration: CFTimeInterval
     
     init(
         frame:CGRect,
@@ -32,7 +32,7 @@ class BrightView: UIView {
         self.hidden = true
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

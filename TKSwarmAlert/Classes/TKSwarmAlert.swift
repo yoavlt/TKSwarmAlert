@@ -15,9 +15,9 @@ public class TKSwarmAlert {
     public var didDissmissAllViews: ()->Void = {}
 
     private var staticViews: [UIView] = []
-    var animationView: FallingAnimationView?
-    var blurView: TKSWBackgroundView?
-    let type: TKSWBackgroundType
+    public var animationView: FallingAnimationView?
+    public var blurView: TKSWBackgroundView?
+    public let type: TKSWBackgroundType
     
     public init(backgroundType: TKSWBackgroundType = .Blur) {
         self.type = backgroundType
