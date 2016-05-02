@@ -78,6 +78,7 @@ public class TKSwarmAlert {
                 self.didDissmissAllViews()
             }
             animationView?.didDisappearAllViews = {
+                self.animationView?.userInteractionEnabled = false
                 self.blurView?.removeFromSuperview()
                 for staticView in self.staticViews {
                     staticView.alpha = 1
