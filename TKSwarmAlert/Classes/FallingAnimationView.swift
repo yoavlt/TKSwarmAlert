@@ -47,7 +47,7 @@ public class FallingAnimationView: UIView {
     var didDisappearAllViews: () -> () = {}
     
     let gravityMagniture:CGFloat = 3
-    let fieldMargin:CGFloat = 300
+    let fieldMargin:CGFloat = 400
 
     var snapBackDistance:CGFloat = 100
     var snapBackVelocity:CGFloat = 1000000
