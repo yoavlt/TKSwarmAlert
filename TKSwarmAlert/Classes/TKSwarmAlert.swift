@@ -87,6 +87,12 @@ public class TKSwarmAlert {
         }
     }
     
+    public func dismiss() {
+        self.animationView?.forceDismiss()
+        self.animationView?.removeFromSuperview()
+        self.blurView?.removeFromSuperview()
+    }
+    
     public func spawn(views:[UIView]) {
         self.animationView?.spawn(views)
     }
